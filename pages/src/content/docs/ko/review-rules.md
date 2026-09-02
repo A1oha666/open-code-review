@@ -93,7 +93,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ```
 
 시스템 측은 위와 같은 내장 테이블에서 **파일별로** 해석됩니다. 하나의 catch-all `**/*`
-항목이면 `.java` 파일에는 `java.md`, `.py` 파일에는 `python.md`, 알 수 없는 확장자에는
+항목이면 `.java` 파일에는 `java.md`, `.py` 또는 `.ipynb` 파일에는 `python.md`, 알 수 없는 확장자에는
 `default.md`가 됩니다. `merge_system_rule`은 세 사용자 계층 모두(`--rule`,
 `<repo>/.opencodereview/rule.json`, `~/.opencodereview/rule.json`)에서 동작합니다.
 

@@ -89,7 +89,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ```
 
 系统一半按**文件**解析，取自上面同一张内嵌表——一条 catch-all `**/*` 条目
-对 `.java` 文件得到 `java.md`，对 `.py` 文件得到 `python.md`，对未识别扩展名
+对 `.java` 文件得到 `java.md`，对 `.py` 或 `.ipynb` 文件得到 `python.md`，对未识别扩展名
 得到 `default.md`。`merge_system_rule` 在全部三个用户层都生效（`--rule`、
 `<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）。
 
