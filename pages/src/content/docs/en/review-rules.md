@@ -98,7 +98,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 
 The system half is resolved **per file**, from the same embedded table above —
 one catch-all `**/*` entry yields `java.md` for a `.java` file, `python.md` for
-a `.py` file, and `default.md` for an unrecognized extension.
+a `.py` file or a `.ipynb` file, and `default.md` for an unrecognized extension.
 `merge_system_rule` works in all three user layers (`--rule`,
 `<repo>/.opencodereview/rule.json`, and `~/.opencodereview/rule.json`).
 

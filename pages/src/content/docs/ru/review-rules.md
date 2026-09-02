@@ -98,7 +98,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ```
 
 Системная половина разрешается по файлу, из той же встроенной таблицы выше — одна catch-all `**/*` запись даёт
-`java.md` для файла `.java`, `python.md` для `.py` и `default.md` для нераспознанного расширения.
+`java.md` для файла `.java`, `python.md` для `.py` или `.ipynb` и `default.md` для нераспознанного расширения.
 `merge_system_rule` работает на всех трёх пользовательских уровнях (`--rule`,
 `<repo>/.opencodereview/rule.json` и `~/.opencodereview/rule.json`).
 

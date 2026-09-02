@@ -80,7 +80,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ────────────────────────────────────────
 ```
 
-システム側は**ファイルごと**に、上記と同じ埋め込みテーブルから解決されます。1 つの catch-all `**/*` エントリで、`.java` ファイルには `java.md`、`.py` ファイルには `python.md`、認識できない拡張子には `default.md` が得られます。`merge_system_rule` は 3 つのユーザー層すべて（`--rule`、`<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）で機能します。
+システム側は**ファイルごと**に、上記と同じ埋め込みテーブルから解決されます。1 つの catch-all `**/*` エントリで、`.java` ファイルには `java.md`、`.py` または `.ipynb` ファイルには `python.md`、認識できない拡張子には `default.md` が得られます。`merge_system_rule` は 3 つのユーザー層すべて（`--rule`、`<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）で機能します。
 
 これは**システム**層のみをマージします。同じファイルに一致する複数の*ユーザー*エントリは依然として first-match-wins で解決され、一致した層は下位のユーザー層を覆い隠します。`merge_system_rule` が複数のユーザールールを重ねることはありません。
 
