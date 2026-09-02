@@ -57,9 +57,54 @@ OCR разрешает правила через **четырёхуровнев�
   отревьюены.
 - `exclude` — необязательно. Glob-шаблоны для файлов, которые OCR *не должен*
   ревьюить. Наивысший приоритет внутри фильтра.
-- `rules` — массив записей `{path, rule}`, вычисляемых **в порядке объявления**.
+- `rules` — массив записей `{path, rule, merge_system_rule?}`, вычисляемых **в порядке объявления**.
   Первый `path`, чей glob совпадает с файлом, определяет промпт, который OCR
   отправляет модели для этого файла.
+  `merge_system_rule` необязателен и по умолчанию равен `false` (замена).
+
+### Слияние с системным правилом {#merging-with-the-system-rule}
+
+По умолчанию совпавшее пользовательское правило *заменяет* системное правило для языка этого файла. Установите
+`"merge_system_rule": true` в записи, чтобы сохранить системное правило рядом с вашим собственным:
+
+```json
+{
+  "rules": [
+    {
+      "path": "**/*",
+      "rule": "Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.",
+      "merge_system_rule": true
+    }
+  ]
+}
+```
+
+```bash
+$ ocr rules check src/main/java/com/example/UserService.java
+Source: Project (.opencodereview/rule.json)
+Pattern: **/*
+Rule:
+────────────────────────────────────────
+## System-Specific Rules (Mandatory)
+
+…contents of java.md…
+
+---
+
+## User-Specific Rules (Mandatory)
+
+Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.
+────────────────────────────────────────
+```
+
+Системная половина разрешается по файлу, из той же встроенной таблицы выше — одна catch-all `**/*` запись даёт
+`java.md` для файла `.java`, `python.md` для `.py` и `default.md` для нераспознанного расширения.
+`merge_system_rule` работает на всех трёх пользовательских уровнях (`--rule`,
+`<repo>/.opencodereview/rule.json` и `~/.opencodereview/rule.json`).
+
+Она объединяет только системный уровень. Несколько пользовательских записей, совпадающих с одним файлом,
+по-прежнему разрешаются по правилу first-match-wins, а совпавший уровень по-прежнему затмевает более низкие
+пользовательские уровни — `merge_system_rule` никогда не складывает несколько пользовательских правил.
 
 ### Возможности glob
 
@@ -294,6 +339,27 @@ ocr review --rule ./.review-rules-only-for-this-pr.json
   ]
 }
 ```
+
+### Глобальные правила безопасности поверх встроенных правил для языков
+
+Catch-all `**/*` пользовательское правило обычно отбрасывает встроенные системные правила для языков. Чтобы
+сохранить их, установите `"merge_system_rule": true` — системная половина по-прежнему разрешается по файлу,
+поэтому каждый язык сохраняет свой специальный фокус ревью:
+
+```json
+{
+  "rules": [
+    {
+      "path": "**/*",
+      "rule": "Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.",
+      "merge_system_rule": true
+    }
+  ]
+}
+```
+
+Поместите это в `~/.opencodereview/rule.json` для каждого репозитория на вашей машине или в
+`<repo>/.opencodereview/rule.json` для одного проекта.
 
 ## Смотрите также
 

@@ -49,8 +49,52 @@ OCR 用一条**四层优先级链**解析规则。对每个文件路径，按序
   下文）。它不是白名单：不匹配任何 `include` 模式的文件仍会经过
   `unsupported_ext` 和 `default_path` 检查，可能仍被评审。
 - `exclude`——可选。OCR 不予评审的文件 glob 模式。过滤中优先级最高。
-- `rules`——`{path, rule}` 条目数组，按**声明顺序**求值。第一个 `path` glob
-  匹配该文件的条目，决定 OCR 发给模型的 prompt。
+- `rules`——`{path, rule, merge_system_rule?}` 条目数组，按**声明顺序**
+  求值。第一个 `path` glob 匹配该文件的条目，决定 OCR 发给模型的 prompt。
+  `merge_system_rule` 可选，默认 `false`（替换）。
+
+### 与系统规则合并
+
+默认情况下，匹配的用户规则会*替换*该文件对应的 per-language 系统规则。
+在该条目上设置 `"merge_system_rule": true`，则让系统规则与你自己的规则并存：
+
+```json
+{
+  "rules": [
+    {
+      "path": "**/*",
+      "rule": "Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.",
+      "merge_system_rule": true
+    }
+  ]
+}
+```
+
+```bash
+$ ocr rules check src/main/java/com/example/UserService.java
+Source: Project (.opencodereview/rule.json)
+Pattern: **/*
+Rule:
+────────────────────────────────────────
+## System-Specific Rules (Mandatory)
+
+…contents of java.md…
+
+---
+
+## User-Specific Rules (Mandatory)
+
+Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.
+────────────────────────────────────────
+```
+
+系统一半按**文件**解析，取自上面同一张内嵌表——一条 catch-all `**/*` 条目
+对 `.java` 文件得到 `java.md`，对 `.py` 文件得到 `python.md`，对未识别扩展名
+得到 `default.md`。`merge_system_rule` 在全部三个用户层都生效（`--rule`、
+`<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）。
+
+它只合并**系统**层。多个*用户*条目匹配同一文件时仍按 first-match-wins 解析，
+匹配层仍遮蔽更低的用户层——`merge_system_rule` 绝不会叠加多条用户规则。
 
 ### glob 能力
 
@@ -267,6 +311,27 @@ ocr review --rule ./.review-rules-only-for-this-pr.json
   ]
 }
 ```
+
+### 在内置 per-language 规则之上叠加全局安全规则
+
+一条 catch-all `**/*` 用户规则通常会丢弃内置的 per-language 系统规则。要保留它们，
+设置 `"merge_system_rule": true`——系统一半仍按文件解析，因此每种语言都保留其专属的
+评审关注点：
+
+```json
+{
+  "rules": [
+    {
+      "path": "**/*",
+      "rule": "Security review: flag hardcoded secrets, unvalidated redirects, and missing authz checks.",
+      "merge_system_rule": true
+    }
+  ]
+}
+```
+
+把它放在 `~/.opencodereview/rule.json` 以覆盖你机器上每个仓库，或放在
+`<repo>/.opencodereview/rule.json` 以覆盖单个项目。
 
 ## 另见
 
