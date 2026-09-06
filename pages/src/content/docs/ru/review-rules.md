@@ -129,7 +129,7 @@ OCR использует [`bmatcuk/doublestar/v4`](https://pkg.go.dev/github.com
 Фильтрация шумных каталогов (`vendor/`, `node_modules/`, `target/`, …)
 происходит раньше, на уровне diff в
 [`internal/diff/git.go`](https://github.com/alibaba/open-code-review/blob/main/internal/diff/git.go),
-до запуска попереходного файлового фильтра.
+до запуска пофайловой фильтрации.
 
 Чтобы **отревьюить** файл, совпадающий с одним из этих шаблонов тестовых
 файлов, добавьте его в пользовательский список `include` — это переопределяет
@@ -194,7 +194,7 @@ OCR использует [`bmatcuk/doublestar/v4`](https://pkg.go.dev/github.com
 | `**/*.sol` | `solidity.md` — смарт-контракты Solidity. |
 | `**/*.vy` | `vyper.md` — смарт-контракты Vyper. |
 | `**/*.rego` | `rego.md` — политики Rego (OPA). |
-| *(fallback)* | `default.md` |
+| *(резервное правило)* | `default.md` |
 
 Разрешённое тело правила становится значением плейсхолдера `{{system_rule}}`
 в промптах plan и main task.
