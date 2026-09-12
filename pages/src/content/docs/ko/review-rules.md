@@ -76,6 +76,7 @@ OCR은 **네 겹의 우선순위 사슬**로 규칙을 해석합니다. 파일 �
 
 ```bash
 $ ocr rules check src/main/java/com/example/UserService.java
+File: src/main/java/com/example/UserService.java
 Source: Project (.opencodereview/rule.json)
 Pattern: **/*
 Rule:
@@ -92,7 +93,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ────────────────────────────────────────
 ```
 
-시스템 측은 위와 같은 내장 테이블에서 **파일별로** 해석됩니다. 하나의 catch-all `**/*`
+시스템 측은 [파일별 규칙 해석](#파일별-규칙-해석)의 내장 테이블에서 **파일별로** 해석됩니다. 하나의 catch-all `**/*`
 항목이면 `.java` 파일에는 `java.md`, `.py` 또는 `.ipynb` 파일에는 `python.md`, 알 수 없는 확장자에는
 `default.md`가 됩니다. `merge_system_rule`은 세 사용자 계층 모두(`--rule`,
 `<repo>/.opencodereview/rule.json`, `~/.opencodereview/rule.json`)에서 동작합니다.
@@ -327,8 +328,7 @@ ocr review --rule ./.review-rules-only-for-this-pr.json
 }
 ```
 
-### 내장 언어별 규칙 위에 전역 보안 규칙 올리기
-{#global-security-rules-on-top-of-the-built-in-per-language-rules}
+### 내장 언어별 규칙 위에 전역 보안 규칙 올리기 {#global-security-rules-on-top-of-the-built-in-per-language-rules}
 
 catch-all `**/*` 사용자 규칙은 보통 내장 언어별 시스템 규칙을 버립니다. 그것을 유지하려면
 `"merge_system_rule": true`를 설정하세요. 시스템 측은 여전히 파일별로 해석되므로 모든 언어가

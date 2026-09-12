@@ -80,6 +80,7 @@ rule alongside your own instead:
 
 ```bash
 $ ocr rules check src/main/java/com/example/UserService.java
+File: src/main/java/com/example/UserService.java
 Source: Project (.opencodereview/rule.json)
 Pattern: **/*
 Rule:
@@ -96,7 +97,8 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ────────────────────────────────────────
 ```
 
-The system half is resolved **per file**, from the same embedded table above —
+The system half is resolved **per file**, from the same embedded table in
+[Rule resolution per file](#rule-resolution-per-file) —
 one catch-all `**/*` entry yields `java.md` for a `.java` file, `python.md` for
 a `.py` file or a `.ipynb` file, and `default.md` for an unrecognized extension.
 `merge_system_rule` works in all three user layers (`--rule`,

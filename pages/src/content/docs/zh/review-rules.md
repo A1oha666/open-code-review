@@ -72,6 +72,7 @@ OCR 用一条**四层优先级链**解析规则。对每个文件路径，按序
 
 ```bash
 $ ocr rules check src/main/java/com/example/UserService.java
+File: src/main/java/com/example/UserService.java
 Source: Project (.opencodereview/rule.json)
 Pattern: **/*
 Rule:
@@ -88,7 +89,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ────────────────────────────────────────
 ```
 
-系统一半按**文件**解析，取自上面同一张内嵌表——一条 catch-all `**/*` 条目
+系统一半按**文件**解析，取自[每个文件的规则解析](#每个文件的规则解析)中的同一张内嵌表——一条 catch-all `**/*` 条目
 对 `.java` 文件得到 `java.md`，对 `.py` 或 `.ipynb` 文件得到 `python.md`，对未识别扩展名
 得到 `default.md`。`merge_system_rule` 在全部三个用户层都生效（`--rule`、
 `<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）。
