@@ -99,7 +99,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ```
 
 Системная половина разрешается по файлу, из той же встроенной таблицы в разделе
-[Разрешение правила для файла](#разрешение-правила-для-файла) — одна catch-all `**/*` запись даёт
+[Разрешение правила для файла](#rule-resolution-per-file) — одна catch-all `**/*` запись даёт
 `java.md` для файла `.java`, `python.md` для `.py` или `.ipynb` и `default.md` для нераспознанного расширения.
 `merge_system_rule` работает на всех трёх пользовательских уровнях (`--rule`,
 `<repo>/.opencodereview/rule.json` и `~/.opencodereview/rule.json`).
@@ -182,7 +182,7 @@ OCR использует [`bmatcuk/doublestar/v4`](https://pkg.go.dev/github.com
 файлов, добавьте его в пользовательский список `include` — это переопределяет
 этап default_path.
 
-## Разрешение правила для файла
+## Разрешение правила для файла {#rule-resolution-per-file}
 
 Когда фильтр решил, что файл *будет* отревьюен, OCR выбирает текст правила,
 которому должен следовать агент:

@@ -81,7 +81,7 @@ Security review: flag hardcoded secrets, unvalidated redirects, and missing auth
 ────────────────────────────────────────
 ```
 
-システム側は**ファイルごと**に、[ファイルごとのルール解決](#ファイルごとのルール解決)の埋め込みテーブルから解決されます。1 つの catch-all `**/*` エントリで、`.java` ファイルには `java.md`、`.py` または `.ipynb` ファイルには `python.md`、認識できない拡張子には `default.md` が得られます。`merge_system_rule` は 3 つのユーザー層すべて（`--rule`、`<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）で機能します。
+システム側は**ファイルごと**に、[ファイルごとのルール解決](#rule-resolution-per-file)の埋め込みテーブルから解決されます。1 つの catch-all `**/*` エントリで、`.java` ファイルには `java.md`、`.py` または `.ipynb` ファイルには `python.md`、認識できない拡張子には `default.md` が得られます。`merge_system_rule` は 3 つのユーザー層すべて（`--rule`、`<repo>/.opencodereview/rule.json`、`~/.opencodereview/rule.json`）で機能します。
 
 これは**システム**層のみをマージします。同じファイルに一致する複数の*ユーザー*エントリは依然として first-match-wins で解決され、一致した層は下位のユーザー層を覆い隠します。`merge_system_rule` が複数のユーザールールを重ねることはありません。
 
@@ -134,7 +134,7 @@ OCR は [`bmatcuk/doublestar/v4`](https://pkg.go.dev/github.com/bmatcuk/doublest
 
 これらのテストファイルパターンに一致するファイルを**レビューする**には、それをユーザー `include` リストに追加してください。それが default-path ゲートを上書きします。
 
-## ファイルごとのルール解決
+## ファイルごとのルール解決 {#rule-resolution-per-file}
 
 フィルタリングによってあるファイルが*レビューされる*と決まったあと、OCR は agent が従うべきルールテキストを選びます:
 
